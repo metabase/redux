@@ -4,10 +4,10 @@ A Clojure/ClojureScript library of reducing function combinators.
 
 ## Installation
 
-Add the following dependency to your `project.clj` or `build.boot`:
+Add the following dependency to your `deps.edn`:
 
 ```clojure
-[redux "0.1.4"]
+{io.github.metabase/redux {:sha "<latest-commit-sha>"}}
 ```
 
 ## Usage
@@ -57,6 +57,6 @@ Strongly inspired by [Tesser](https://github.com/aphyr/tesser).
 
 ## License
 
-Copyright © 2016 Henry Garner
+Copyright © 2016 Henry Garner, 2024 Metabase, Inc.
 
 Distributed under the Eclipse Public License version 1.0.

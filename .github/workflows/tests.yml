@@ -1,0 +1,82 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  kondo:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    env:
+      CLJ_KONDO_VERSION: "2023.09.07"
+      DOWNLOAD_URL: https://github.com/clj-kondo/clj-kondo/releases/download
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          cache-key: kondo
+      - name: Install clj-kondo
+        run: |
+          curl -OL ${DOWNLOAD_URL}/v${CLJ_KONDO_VERSION}/clj-kondo-${CLJ_KONDO_VERSION}-linux-static-amd64.zip
+          curl -OL ${DOWNLOAD_URL}/v${CLJ_KONDO_VERSION}/clj-kondo-${CLJ_KONDO_VERSION}-linux-static-amd64.zip.sha256
+          cat clj-kondo-${CLJ_KONDO_VERSION}-linux-static-amd64.zip.sha256 >> SHA256sum.txt
+          echo " clj-kondo-${CLJ_KONDO_VERSION}-linux-static-amd64.zip" >> SHA256sum.txt
+          sha256sum -c SHA256sum.txt
+          unzip -d /usr/local/bin clj-kondo-${CLJ_KONDO_VERSION}-linux-static-amd64.zip
+      - run: clj-kondo --version
+      - name: Run clj-kondo
+        run: >-
+          clj-kondo
+          --parallel
+          --lint src test
+
+  tests:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup
+      uses: ./.github/actions/setup
+      with:
+        cache-key: tests
+    - run: clojure -X:test
+      name: Run tests
+
+  tests-cljs:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup
+      uses: ./.github/actions/setup
+      with:
+        cache-key: tests-cljs
+    - run: npm install
+    - run: npx shadow-cljs compile test
+      name: Run tests (ClojureScript)
+
+  whitespace-linter:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup
+      uses: ./.github/actions/setup
+      with:
+        cache-key: whitespace-linter
+    - run: clojure -T:whitespace-linter
+      name: Run whitespace linter
+
+  check:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup
+      uses: ./.github/actions/setup
+      with:
+        cache-key: check
+    - run: clojure -M:check
+      name: Check namespaces
