@@ -57,6 +57,6 @@ Strongly inspired by [Tesser](https://github.com/aphyr/tesser).
 
 ## License
 
-Copyright © 2016 Henry Garner
+Copyright © 2016 Henry Garner, 2024 Metabase, Inc.
 
 Distributed under the Eclipse Public License version 1.0.
