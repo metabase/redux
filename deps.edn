@@ -1,0 +1,16 @@
+{:aliases
+ {:dev
+  {:extra-paths ["test"]}
+
+  ;; npx shadow-cljs compile test
+  :cljs
+  {:extra-paths ["test"]
+   :extra-deps
+   {thheller/shadow-cljs {:mvn/version "2.11.23"}}}
+
+  ;; clj -X:test to run the tests
+  :test
+  {:extra-paths ["test"]
+   :extra-deps
+   {io.github.metabase/hawk {:sha "ac3c663b22114d99303b8da88d982248da391780"}}
+   :exec-fn mb.hawk.core/find-and-run-tests-cli}}}
