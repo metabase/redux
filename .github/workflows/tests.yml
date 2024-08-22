@@ -54,7 +54,7 @@ jobs:
     - name: Setup
       uses: ./.github/actions/setup
       with:
-        cache-key: tests
+        cache-key: tests-cljs
     - run: npm install
     - run: npx shadow-cljs compile test
       name: Run tests (ClojureScript)
