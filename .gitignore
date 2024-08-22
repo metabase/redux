@@ -11,6 +11,7 @@
 /.shadow-cljs
 /checkouts
 /classes
+/node_modules
 /target
 \#*\#
 out

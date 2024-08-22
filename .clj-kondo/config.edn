@@ -1,0 +1,3 @@
+{:linters
+ {:refer-all
+  {:level :warning, :exclude [clojure.test]}}}

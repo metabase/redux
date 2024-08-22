@@ -1,6 +1,9 @@
 {:aliases
  {:dev
-  {:extra-paths ["test"]}
+  {:extra-paths ["test"]
+
+   :jvm-opts
+   ["-XX:-OmitStackTraceInFastThrow"]}
 
   ;; npx shadow-cljs compile test
   :cljs
@@ -13,4 +16,18 @@
   {:extra-paths ["test"]
    :extra-deps
    {io.github.metabase/hawk {:sha "ac3c663b22114d99303b8da88d982248da391780"}}
-   :exec-fn mb.hawk.core/find-and-run-tests-cli}}}
+   :exec-fn mb.hawk.core/find-and-run-tests-cli}
+
+  ;; clojure -M:check
+  :check
+  {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"
+                                 :sha     "518d5a1cbfcd7c952f548e6dbfcb9a4a5faf9062"}}
+   :main-opts  ["-m" "clj-check.check"]}
+
+  ;; clj -T:whitespace-linter
+  :whitespace-linter
+  {:deps       {com.github.camsaul/whitespace-linter {:sha "e35bc252ccf5cc74f7d543ef95ad8a3e5131f25b"}}
+   :ns-default whitespace-linter
+   :exec-fn    whitespace-linter/lint
+   :exec-args  {:paths            ["deps.edn" "src" "test"]
+                :include-patterns ["\\.clj[cs]?$" "\\.edn$"]}}}}
